@@ -4,12 +4,12 @@ import jwt from "jsonwebtoken"
 import { ErrorHandler } from "../utils/error.js";
 
 export const register = async (req, res, next) => {
-  const { name, email, mobile, password } = req.body;
-
   try {
+    const { name, email, mobile, password } = req.body;
+
     const user = await User.findOne({ $or: [{ email }, { mobile }] });
     if (user) {
-      return next(ErrorHandler("User already exists with given email or password",404))
+      return next(ErrorHandler("User already exists with given email or mobile",400))
     }
     const protectedPassword = await bcrypt.hash(password, 10);
     await User.create({
@@ -23,8 +23,8 @@ export const register = async (req, res, next) => {
       success:true,
       message:"Signup Successfull"
     })
-  } catch (error) {
-    console.log(error);
+  } catch(error) {
+    next(error)
   }
 };
 
@@ -38,7 +38,7 @@ export const login = async (req, res, next) => {
     }
     const isMatched=await bcrypt.compare(password,user.password);
     if(!isMatched){
-        return next(ErrorHandler("Invalid email or password",404))
+        return next(ErrorHandler("Invalid email or password",400))
     }
     const jwtToken=jwt.sign(user.toJSON(),process.env.SECRET_KEY,{
         expiresIn:'15m'
@@ -49,7 +49,7 @@ export const login = async (req, res, next) => {
         jwtToken
     })
 
-  } catch (error) {
-    console.log(error)
+  } catch (error){
+    next(error)
   }
 };

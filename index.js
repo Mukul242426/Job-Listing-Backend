@@ -1,8 +1,10 @@
 import express from "express"
 import userRouter from './routes/user.js'
+import jobRouter from './routes/job.js'
 import mongoose from "mongoose"
 import dotenv from "dotenv"
 import { errorMiddleware } from "./middlewares/error.js"
+import { ErrorHandler } from "./utils/error.js"
 
 const app=express()
 
@@ -29,6 +31,10 @@ app.get('/health',(req,res)=>{
 })
 
 app.use(userRouter)
+app.use(jobRouter)
+app.all('*',(req,res,next)=>{
+    next(ErrorHandler())
+})
 
 app.use(errorMiddleware)
 

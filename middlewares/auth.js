@@ -14,7 +14,7 @@ export const isAuthenticated=(req,res,next)=>{
     next()
 
    }catch(error){
-      next(ErrorHandler("Session Expired!!! Please login again",400))
+      next(ErrorHandler("You are not logged in !! Please login",400))
    }
 
 }

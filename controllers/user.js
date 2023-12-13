@@ -21,7 +21,8 @@ export const register = async (req, res, next) => {
 
     res.status(200).json({
       success:true,
-      message:"Signup Successfull"
+      message:"Signup Successfull",
+      recruiterName:name
     })
   } catch(error) {
     next(error)
@@ -46,6 +47,7 @@ export const login = async (req, res, next) => {
     res.status(200).json({
         success:true,
         message:"Login Successfull",
+        recruiterName:user.name,
         jwtToken
     })
 

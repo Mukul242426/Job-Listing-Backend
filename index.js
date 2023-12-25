@@ -5,11 +5,14 @@ import mongoose from "mongoose"
 import dotenv from "dotenv"
 import { errorMiddleware } from "./middlewares/error.js"
 import { ErrorHandler } from "./utils/error.js"
+import cors from "cors"
 
 const app=express()
+app.use(cors())
 
 dotenv.config()
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 

@@ -22,9 +22,7 @@ export const register = async (req, res, next) => {
       mobile,
       password: protectedPassword,
     });
-    const jwtToken = jwt.sign(user.toJSON(), process.env.SECRET_KEY, {
-      expiresIn: "15m",
-    });
+    const jwtToken = jwt.sign(user.toJSON(), process.env.SECRET_KEY);
 
     res.status(200).json({
       success: true,
@@ -53,9 +51,7 @@ export const login = async (req, res, next) => {
     if (!isMatched) {
       return next(ErrorHandler("Invalid email or password", 400));
     }
-    const jwtToken = jwt.sign(user.toJSON(), process.env.SECRET_KEY, {
-      expiresIn: "15m",
-    });
+    const jwtToken = jwt.sign(user.toJSON(), process.env.SECRET_KEY);
     res.status(200).json({
       success: true,
       message: "Login Successfull",

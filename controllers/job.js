@@ -36,7 +36,7 @@ export const createJobPost = async (req, res, next) => {
       message: "Job Post created successfully",
     });
   } catch (error) {
-    next(ErrorHandler("All Fields are required",400));
+    next(ErrorHandler("All Fields are required", 400));
   }
 };
 
@@ -55,6 +55,22 @@ export const editJobPost = async (req, res, next) => {
     skillsRequired,
     information,
   } = req.body;
+
+  if (
+    !companyName ||
+    !logoUrl ||
+    !position ||
+    !monthlySalary ||
+    !jobType ||
+    !remote ||
+    !location ||
+    !description ||
+    !about ||
+    !skillsRequired ||
+    !information
+  ) {
+    return next(ErrorHandler("All fields are required", 400));
+  }
 
   try {
     await Job.findByIdAndUpdate(jobId, {
@@ -98,7 +114,9 @@ export const viewJobs = async (req, res, next) => {
 
     const jobs = await Job.find({
       $or: [
-        { position:position===''?'':{$regex:position,$options:'i'}},
+        {
+          position: position === "" ? "" : { $regex: position, $options: "i" },
+        },
         { skillsRequired: { $in: selectedSkills } },
       ],
     });
@@ -125,23 +143,20 @@ export const displaySkills = async (req, res, next) => {
   }
 };
 
-export const viewJob=async(req,res,next)=>{
+export const viewJob = async (req, res, next) => {
+  const { jobId } = req.params;
 
-  const {jobId}=req.params;
-
-  try{
-    const job= await Job.findOne({_id:jobId})
-    console.log(job)
-    if(!job){
-      return next(ErrorHandler("Job doesn't exist",400))
+  try {
+    const job = await Job.findOne({ _id: jobId });
+    if (!job) {
+      return next(ErrorHandler("Job doesn't exist", 400));
     }
     res.status(200).json({
-      success:true,
-      job
-    })
-
-  }catch(error){
-    console.log(error)
-    next(error)
+      success: true,
+      job,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
-}
+};

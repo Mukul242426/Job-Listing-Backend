@@ -156,7 +156,6 @@ export const viewJob = async (req, res, next) => {
       job,
     });
   } catch (error) {
-    console.log(error);
-    next(error);
+    next(ErrorHandler(`Invalid ${error.path} : ${error.value}`,400));
   }
 };

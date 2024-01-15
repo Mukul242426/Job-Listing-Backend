@@ -6,6 +6,7 @@ import dotenv from "dotenv"
 import { errorMiddleware } from "./middlewares/error.js"
 import { ErrorHandler } from "./utils/error.js"
 import cors from "cors"
+import { User } from "./models/user.js"
 
 const app=express()
 app.use(cors())
@@ -41,6 +42,8 @@ app.all('*',(req,res,next)=>{
 })
 
 app.use(errorMiddleware)
+
+
 
 // database connection
 
